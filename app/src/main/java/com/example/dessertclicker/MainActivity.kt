@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example.dessertclicker
 
 import android.content.ActivityNotFoundException
@@ -62,14 +47,15 @@ import com.example.dessertclicker.ui.theme.DessertClickerTheme
 import com.example.dessertclicker.ui.DessertViewModel
 
 // tag for logging
+// logs são utilizados para visualização do funcionamento do projeto, ex: onde onStart foi
+// chamada...
 private const val TAG = "MainActivity"
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate Called")
-
+        Log.d(TAG, "onCreate Called") // quando a atividade é criada, inicializando-a. Ex.:
+        // o layout da interfacde
         setContent {
             DessertClickerTheme {
                 DessertClickerApp()
@@ -77,51 +63,53 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onStart() {
+    override fun onStart() { // após onCreate, tornando a atividade visível na tela.
         super.onStart()
         Log.d(TAG, "onStart Called")
     }
 
-    override fun onResume() {
+    override fun onResume() { // quando a atividade começa a ser interagida pelo usuário
         super.onResume()
         Log.d(TAG, "onResume Called")
     }
 
-    override fun onRestart() {
+    override fun onRestart() { // se uma atividade foi parada e está prestes a ser reiniciada,
+        // antes de onStart
         super.onRestart()
         Log.d(TAG, "onRestart Called")
     }
 
     override fun onPause() {
-        super.onPause()
+        super.onPause() // quando o app não está mais em foco
         Log.d(TAG, "onPause Called")
     }
 
     override fun onStop() {
-        super.onStop()
+        super.onStop() // quando o app não está mais visível
         Log.d(TAG, "onStop Called")
     }
 
-    override fun onDestroy() {
+    override fun onDestroy() { // quando a atividade é destruída e o sistema librera os recursos
+        // alocados por ela
         super.onDestroy()
         Log.d(TAG, "onDestroy Called")
     }
 }
 
-/**
- * Share desserts sold information using ACTION_SEND intent
- */
 private fun shareSoldDessertsInformation(intentContext: Context, dessertsSold: Int, revenue: Int) {
-    val sendIntent = Intent().apply {
-        action = Intent.ACTION_SEND
+    // compartilha informações sobre a quantidade de doces vendidos e a receita gerada
+    val sendIntent = Intent().apply { // intent é uma função do android para interagir com outros
+        // aplicativos, como compartilhas texto
+        action = Intent.ACTION_SEND // envia algo
         putExtra(
-            Intent.EXTRA_TEXT,
+            Intent.EXTRA_TEXT, // texto que acompanha o compartilhamento
             intentContext.getString(R.string.share_text, dessertsSold, revenue)
         )
-        type = "text/plain"
+        type = "text/plain" // define o tipo de dado como texto simples
     }
 
     val shareIntent = Intent.createChooser(sendIntent, null)
+    //seletor de aplicativos para o usuario escolher
 
     try {
         startActivity(intentContext, shareIntent, null)
